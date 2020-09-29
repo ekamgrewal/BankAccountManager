@@ -28,13 +28,21 @@ public class BankAccount {
 		 
 	 }
 	 
-	 public void withdraw(double amount) {
+	 public void withdraw(double amount) throws InsufficientFundsException  {
 		 
-		 if (amount<0) {
+		 double negativeAmount= -amount;
+		
+		 
+		 if(negativeAmount>balance) {
+			 
+			 throw new InsufficientFundsException("Insufficient funds in the account.");
+		 }
+		 else if (amount<0) {
 			 
 			 balance+=amount;
 			 previousTransaction=amount;
 		 }
+		 
 		 
 	 }
 	 
@@ -59,7 +67,7 @@ public class BankAccount {
 		 
 	 }
 	 
-	 public void showMenu(){
+	 public void showMenu() throws InsufficientFundsException{
 		 
 		 char option='\0';
 		 
@@ -117,10 +125,13 @@ public class BankAccount {
 				 System.out.println("Enter an amount to be withdrawn: ");
 				 System.out.println("------------------------------");
 				 double amount2= -(sc.nextDouble());
-				 if (amount2<0) {
+				 double receiptAmount= (-1*amount2);
+				 if(receiptAmount>balance) {
+					 withdraw(amount2);
+				 }
+				 else if (amount2<0) {
 					 
 					 withdraw(amount2);
-					 double receiptAmount= (-1*amount2);
 					 System.out.println("Amount successfully withdrawn: $"+ receiptAmount);
 					 System.out.println("Current Balance: $"+balance);
 					 System.out.println("\n");
@@ -157,14 +168,14 @@ public class BankAccount {
 			 
 			 
 		 }
-	 public static void main(String[] args) {
+	 public static void main(String[] args) throws InsufficientFundsException {
 				 
 		 BankAccount obj= new BankAccount("BZ007","ABC",25);
 		 obj.showMenu();
 	 }
 	 
 	 
-	 
+	
 	
 
 
